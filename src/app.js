@@ -10,12 +10,14 @@ import 'colors'
 import 'module-alias/register'
 import Koa from 'koa'
 
-import { registerApp } from '~/lib/decorator/Controller'
+import { registerApp } from '~/lib/decorator/quick-d'
 import config from '@/config'
 
 global.MAIN_APP = new Koa()
 
 registerApp(MAIN_APP)
+
+import '@/controller/HomeController'
 
 MAIN_APP.listen(config.server.port, config.server.host, _ => {
   console.log(

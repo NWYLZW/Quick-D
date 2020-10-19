@@ -22,7 +22,8 @@
     "koa": "^2.13.0",
     "koa-router": "^9.4.0",
     "module-alias": "^2.2.2",
-    "nodemon": "^2.0.5"
+    "nodemon": "^2.0.5",
+    "reflect-metadata": "^0.1.13"
   },
   "_moduleAliases": {
     "~": ".",
