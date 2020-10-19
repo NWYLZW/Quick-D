@@ -4,10 +4,14 @@
  * @date    2020-10-18 15:40
  * @logs[0] 2020-10-18 15:40 yijie 创建了app.js文件
  */
+// 控制台彩色字体
 import 'colors'
+// 模块导入重命名
+import 'module-alias/register'
 import Koa from 'koa'
+
 import { registerApp } from '~/lib/decorator/Controller'
-const config = require('./config').default
+import config from '@/config'
 
 global.MAIN_APP = new Koa()
 
