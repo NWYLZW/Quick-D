@@ -7,11 +7,12 @@
 import { Controller, GetRequest } from "~/lib/decorator/quick-d";
 
 @Controller()
-export default class HomeController {
+class HomeController {
+  text = `
+      <h1>Hello world</h1>
+  `
   @GetRequest('/hello')
   async test1 (ctx) {
-    ctx.body = `
-        <h1>Hello world</h1>
-    `
+    return this.text
   }
 }

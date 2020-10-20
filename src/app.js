@@ -10,14 +10,20 @@ import 'colors'
 import 'module-alias/register'
 import Koa from 'koa'
 
+import config from './config'
+
 import { registerApp } from '~/lib/decorator/quick-d'
-import config from '@/config'
 
 global.MAIN_APP = new Koa()
 
 registerApp(MAIN_APP)
 
-import '@/controller/HomeController'
+const controllersFileNames = require('fs').readdirSync(__dirname + '/controller')
+for (let controllersName in controllersFileNames) {
+  if (/\.js$/.test(controllersFileNames)) {
+    require(`@/controller/${controllersFileNames}`)
+  }
+}
 
 MAIN_APP.listen(config.server.port, config.server.host, _ => {
   console.log(

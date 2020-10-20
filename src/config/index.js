@@ -4,6 +4,7 @@
  * @date    2020-10-18 17:16
  * @logs[0] 2020-10-18 17:16 yijie 创建了index.js文件
  */
+import './aliases'
 
 export default {
   server: {
