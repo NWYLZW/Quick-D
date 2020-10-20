@@ -6,13 +6,12 @@
  */
 import { Controller, GetRequest } from "~/lib/decorator/quick-d";
 
-@Controller('/home')
+@Controller()
 export default class HomeController {
-  @GetRequest('/test1')
-  test1 () {
-    return {
-      code: 200,
-      message: 'yes'
-    }
+  @GetRequest('/hello')
+  async test1 (ctx) {
+    ctx.body = `
+        <h1>Hello world</h1>
+    `
   }
 }
