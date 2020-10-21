@@ -19,9 +19,11 @@ global.MAIN_APP = new Koa()
 registerApp(MAIN_APP)
 
 const controllersFileNames = require('fs').readdirSync(__dirname + '/controller')
-for (let controllersName in controllersFileNames) {
-  if (/\.js$/.test(controllersFileNames)) {
-    require(`@/controller/${controllersFileNames}`)
+for (let controllersNameIndex in controllersFileNames) {
+  const controllersName = controllersFileNames[controllersNameIndex]
+
+  if (/\.js$/.test(controllersName)) {
+    require(`@/controller/${controllersName}`)
   }
 }
 
