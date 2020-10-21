@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/NWYLZW/Quick-D" target="_blank" rel="noopener noreferrer">
-        <img width="100" src="./logo.png" alt="Quick-D logo">
+        <img width="100" src="https://raw.githubusercontent.com/NWYLZW/Quick-D/master/logo.png" alt="Quick-D logo">
     </a>
 </p>
 <h2 align="center">Using Quick-D to developing</h2>
