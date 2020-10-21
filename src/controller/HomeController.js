@@ -4,7 +4,7 @@
  * @date    2020-10-18 17:33
  * @logs[0] 2020-10-18 17:33 yijie 创建了HomeController.js文件
  */
-import { Controller, GetRequest, Query } from "~/lib/decorator/quick-d";
+import { Controller, GetRequest } from "~/lib/decorator/quick-d";
 
 @Controller()
 class HomeController {
@@ -12,8 +12,7 @@ class HomeController {
       <h1>Hello world test</h1>
   `
   @GetRequest('/hello')
-  async hello (ctx, @Query x) {
-    console.log(x)
-    return `${this.text}${x.test}`
+  async hello (ctx) {
+    return `${this.text}`
   }
 }
