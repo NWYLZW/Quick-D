@@ -31,5 +31,5 @@ MAIN_APP.listen(config.server.port, config.server.host, _ => {
   console.log(
     require('figlet').textSync('Quick-D').blue
   )
-  console.log('Server is running in '.red + `http://${config.server.host}:${config.server.port}`.green)
+  console.log('Server is running in '.green + `http://${config.server.host}:${config.server.port}`.green)
 })

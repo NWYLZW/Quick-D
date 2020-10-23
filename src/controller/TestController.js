@@ -22,8 +22,8 @@ class TestController {
     return 'success'
   }
   @PostRequest('/post-require')
-  async test4 (@BodyParam('test', true) test1) {
-    console.log(test1)
+  async test4 (@BodyParam('test', true, '123', String, /^\d{3}$/) test1) {
+    console.log('test1', test1)
     return 'success'
   }
 }
