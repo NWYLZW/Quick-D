@@ -10,7 +10,11 @@
     "build": "babel ./src -d ./dist && npm run build:external-lib"
   },
   "author": "yijie",
-  "license": "Apache License V2",
+  "license": "Apache License 2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:NWYLZW/Quick-D.git"
+  },
   "dependencies": {
     "colors": "^1.4.0",
     "figlet": "^1.5.0",
