@@ -4,12 +4,16 @@
  * @date    2020-10-18 17:33
  * @logs[0] 2020-10-18 17:33 yijie 创建了TestController.js文件
  */
-import { Controller, GetRequest, PostRequest, Query, BodyParam } from '~/lib/decorator/quick-d'
+import {
+  Controller,
+  GetRequest, PostRequest,
+  Query, BodyParam
+} from '~/lib/decorator/quick-d'
 
 @Controller('/test')
 class TestController {
   @GetRequest('/get-notRequire')
-  async test1 (@Query('test1') test1) {
+  async test1 (@Query test1) {
     return `<h1>test1: ${test1}</h1>`
   }
   @GetRequest('/get-require')
@@ -22,8 +26,13 @@ class TestController {
     return 'success'
   }
   @PostRequest('/post-require')
-  async test4 (@BodyParam('test', true, '123', String, /^\d{3}$/) test1) {
-    console.log('test1', test1)
+  async test4 (
+    @BodyParam(
+      'test', true, '123', String,
+      /^\d{3}$/
+    ) test
+  ) {
+    console.log('test:', test)
     return 'success'
   }
 }
