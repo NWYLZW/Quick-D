@@ -41,7 +41,9 @@ const registerApp = (app: Koa) => {
 
   const oldListen = APP.listen
   APP.listen = (...args) => {
-    const controllers = global['$Quick-D']['controllers']
+    const controllers = (global?.['$Quick-D'] ?? {
+      controllers: []
+    }).controllers
     for (const controllerName in controllers) {
       const controller = controllers[controllerName]
       const instance = new controller()
