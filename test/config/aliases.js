@@ -12,8 +12,8 @@ let aliasesEnvs = {
     '~': path.join(__dirname, '../../'),
     '@': path.join(__dirname, '../')
   },
-  production: {
-    '~/lib': path.join(__dirname, '../project-external-lib')
+  development: {
+    '~/lib': path.join(__dirname, '../../src')
   }
 }
 

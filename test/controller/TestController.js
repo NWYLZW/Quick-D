@@ -4,11 +4,9 @@
  * @date    2020-10-18 17:33
  * @logs[0] 2020-10-18 17:33 yijie 创建了TestController.js文件
  */
-import {
-  Controller,
-  GetRequest, PostRequest,
-  Query, BodyParam
-} from '~/lib'
+import { Controller } from '~/lib/common/Controller'
+import { GetRequest, PostRequest } from '~/lib/common/Request'
+import { BodyParam, Query } from '~/lib/common/BodyParam'
 
 @Controller('/test')
 class TestController {

@@ -1,0 +1,12 @@
+.commit-template.json
+.editorconfig
+.gitignore
+AUTHORS
+logo.png
+webstorm.config.js
+*.lock
+
+.idea
+dist
+src
+test
