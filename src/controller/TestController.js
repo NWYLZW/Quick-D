@@ -8,7 +8,7 @@ import {
   Controller,
   GetRequest, PostRequest,
   Query, BodyParam
-} from '~/lib/decorator/quick-d'
+} from '~/lib'
 
 @Controller('/test')
 class TestController {

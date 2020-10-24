@@ -12,7 +12,7 @@ import Koa from 'koa'
 
 import config from './config'
 
-import { registerApp } from '~/lib/decorator/quick-d'
+import { registerApp } from '~/lib'
 
 global.MAIN_APP = new Koa()
 
