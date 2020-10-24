@@ -1,7 +1,7 @@
 {
-  "name": "koa-study",
+  "name": "quick-d",
   "version": "1.0.0",
-  "description": "",
+  "description": "Quickly develop a nodejs background program",
   "main": "src/app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/app.js",
@@ -10,7 +10,7 @@
     "build": "babel ./src -d ./dist && npm run build:external-lib"
   },
   "author": "yijie",
-  "license": "MIT",
+  "license": "Apache License V2",
   "dependencies": {
     "colors": "^1.4.0",
     "figlet": "^1.5.0",
