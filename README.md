@@ -3,7 +3,7 @@
         <img width="100" src="https://raw.githubusercontent.com/NWYLZW/Quick-D/master/logo.png" alt="Quick-D logo">
     </a>
 </p>
-<h1 align="center">Using Quick-D to developing</h1>
+<h1 align="center">Using Quick-D to develop</h1>
 
 ## 基于nodejs koa模块，对spring boot的拙劣模仿
 
