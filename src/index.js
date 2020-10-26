@@ -152,9 +152,9 @@ const registerApp = (app: Koa) => {
 
             let returnBody
             if (instanceArgs.length === 0) {
-              returnBody = await method(ctx)
+              returnBody = await instance[methodName](ctx)
             } else {
-              returnBody = await method(...instanceArgs)
+              returnBody = await instance[methodName](...instanceArgs)
             }
             if (returnBody !== undefined) {
               ctx.body = returnBody
