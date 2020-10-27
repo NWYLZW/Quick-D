@@ -11,12 +11,11 @@ import koaBodyparser from 'koa-bodyparser'
 import TypeNotSatisfyError from './error/TypeNotSatisfyError'
 import ValueNotDeliveredError from './error/ValueNotDeliveredError'
 import FormatNotMatchError from './error/FormatNotMatchError'
-import removeComments from './tool/removeComments'
 
-/**
- * 接收主程序传来的 APP 实体
- */
-let APP = undefined
+import removeComments from './tool/removeComments'
+import {
+  ErrorListener
+} from './common/Handler'
 
 /**
  * 反射获取controller中的数据
@@ -33,14 +32,53 @@ const reflectGetData = controller => {
 
 /**
  * 为框架注册 koa应用实体
- * @param app koa应用实体
+ * @param app           {Koa}           koa应用实体
  */
 const registerApp = (app: Koa) => {
-  APP = app
-  APP.use(koaBodyparser())
+  // 添加全局的异常处理
+  app.use(async (ctx, next) => {
+    const errorsHandlers = (Reflect
+      .getMetadata('errorsHandlers', ErrorListener) ?? []).sort((a, b) => {
+        return a.weight > b.weight ? -1:1
+      })
 
-  const oldListen = APP.listen
-  APP.listen = (...args) => {
+    try {
+      await next()
+    } catch (e) {
+      ctx.status = 500
+      ctx.body = {
+        status:  e.statusCode || e.status || 500,
+        message: e.message
+      }
+      let isPrintStack = false
+      if ((errorsHandlers ?? []).length === 0) {
+        isPrintStack = (new ErrorListener()).isLogStack
+      } else {
+        errorsHandlers.forEach(errorsHandler => {
+          const instance = new errorsHandler.target.constructor()
+          const errors = errorsHandler?.errors ?? []
+
+          isPrintStack = instance.isLogStack
+          errors.forEach(error => {
+            if (error === e.constructor) {
+              instance[
+                errorsHandler.methodName
+              ]([ ctx, e ])
+            }
+          })
+        })
+      }
+      if (isPrintStack) {
+        ctx.body.stack = e.stack
+      }
+      ctx.app.emit('catch-error', [ ctx, e ])
+    }
+  })
+
+  app.use(koaBodyparser())
+
+  const oldListen = app.listen
+  app.listen = (...args) => {
     const controllers = (global?.['$Quick-D'] ?? {
       controllers: []
     }).controllers
@@ -162,14 +200,14 @@ const registerApp = (app: Koa) => {
           })
         })
 
-        APP.use(router.routes())
-        APP.use(router.allowedMethods())
+        app.use(router.routes())
+        app.use(router.allowedMethods())
       }
     }
-    oldListen.call(APP, ...args)
+    oldListen.call(app, ...args)
   }
 }
 
 export {
-  APP, registerApp
+  registerApp
 }

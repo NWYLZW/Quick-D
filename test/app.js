@@ -27,6 +27,8 @@ for (let controllersNameIndex in controllersFileNames) {
   }
 }
 
+require('@/listener/ServerErrorListener')
+
 MAIN_APP.listen(config.server.port, config.server.host, _ => {
   console.log(
     require('figlet').textSync('Quick-D').blue

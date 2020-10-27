@@ -14,11 +14,21 @@ import Router from 'koa-router'
  */
 const Controller = (path: string = ''): ClassDecorator => {
   return (originClass: Function) => {
-    if (global['$Quick-D'] === undefined) {
-      global['$Quick-D'] = {}
-      global['$Quick-D']['controllers'] = {}
-    }
-    global['$Quick-D']['controllers'][originClass.name] = originClass
+    const properties = [{
+      name: '$Quick-D',
+      default: {}
+    }, {
+      name: 'controllers',
+      default: {}
+    }, {
+      name: originClass.name,
+      default: originClass
+    }]
+    let baseObj = global
+    properties.forEach(property => {
+      baseObj[property.name] = baseObj[property.name] ?? property.default
+      baseObj = baseObj[property.name]
+    })
 
     Reflect.defineMetadata('path', path, originClass)
     Reflect.defineMetadata('router', new Router(), originClass)

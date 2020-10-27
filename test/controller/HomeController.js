@@ -16,4 +16,9 @@ class HomeController {
   async hello (ctx) {
     return `${this.text}`
   }
+  @GetRequest('/throw-some-error')
+  async throwError () {
+    throw new Error('test')
+  }
 }
+
