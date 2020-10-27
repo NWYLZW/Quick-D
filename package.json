@@ -4,7 +4,7 @@
   "description": "Quickly develop a nodejs background program",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./test/app.js",
+    "test": "cross-env NODE_ENV=development nodemon --exec babel-node ./test/app.js",
     "pro": "cross-env NODE_ENV=production  node ./dist/app.js",
     "build:lib": "babel ./src -d ./lib",
     "build": "babel ./test -d ./dist && npm run build:lib"
