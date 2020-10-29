@@ -29,6 +29,12 @@ for (let controllersNameIndex in controllersFileNames) {
 
 require('@/listener/ServerErrorListener')
 
+require('@/plugin/index')
+.registerPlugins()
+.then(r => {}).catch(e => {
+  console.error('Connect to database error: ', e)
+})
+
 MAIN_APP.listen(config.server.port, config.server.host, _ => {
   console.log(
     require('figlet').textSync('Quick-D').blue

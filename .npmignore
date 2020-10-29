@@ -8,5 +8,4 @@ webstorm.config.js
 
 .idea
 dist
-src
 test

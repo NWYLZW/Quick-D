@@ -208,6 +208,31 @@ const registerApp = (app: Koa) => {
   }
 }
 
+interface DataBaseServer {
+  type: string,
+  db:   Object
+}
+
+/**
+ * 将数据库服务注入框架中
+ * @param dataBaseServers 数据库服务信息列表
+ */
+const registerDBServers = (dataBaseServers: DataBaseServer[]) => {
+  const properties = [{
+    name: '$Quick-D',
+    default: {}
+  }, {
+    name: 'dataBaseServers',
+    default: dataBaseServers ?? []
+  }]
+  let baseObj = global
+  properties.forEach(property => {
+    baseObj[property.name] = baseObj[property.name] ?? property.default
+    baseObj = baseObj[property.name]
+  })
+}
+
 export {
-  registerApp
+  registerApp,
+  registerDBServers
 }
