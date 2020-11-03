@@ -19,14 +19,14 @@ class ReqMethod {
  * 获取路由注册装饰器
  * @param path        请求路径
  * @param reqMethods  请求类型数组
- * @returns {function({}, string, Object): void}
+ * @returns {function({}, String, Object): void}
  */
-const Request = (path: string = '', reqMethods: string[]): MethodDecorator => {
+const Request = (path: String = '', reqMethods: [String]): MethodDecorator => {
   for (let i = 0; i < reqMethods.length; i++) {
     reqMethods[i] = reqMethods[i].toLocaleLowerCase()
   }
 
-  return (target: {}, methodName: string, method: Object) => {
+  return (target: {}, methodName: String, method: Object) => {
     const originClass = target.constructor
 
     let routes = Reflect.getMetadata('routes', originClass)
