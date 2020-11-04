@@ -84,9 +84,7 @@ const AutoWired = (componentName: String): PropertyDecorator => {
           [propertyKey]: component
         })
         originClass[propertyKey] = component
-      }).catch(e => {
-      console.log(e)
-    })
+      })
   }
 }
 
