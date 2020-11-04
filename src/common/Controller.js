@@ -5,6 +5,7 @@
  * @logs[0] 2020-10-18 17:36 yijie 创建了Controller.js文件
  */
 import Router from 'koa-router'
+import deepDefine from '../tool/deepDefine'
 
 /**
  * 根据参数路由控制器装饰器
@@ -14,7 +15,7 @@ import Router from 'koa-router'
  */
 const Controller = (path: string = ''): ClassDecorator => {
   return (originClass: Function) => {
-    const properties = [{
+    deepDefine(global, [{
       name: '$Quick-D',
       default: {}
     }, {
@@ -23,12 +24,7 @@ const Controller = (path: string = ''): ClassDecorator => {
     }, {
       name: originClass.name,
       default: originClass
-    }]
-    let baseObj = global
-    properties.forEach(property => {
-      baseObj[property.name] = baseObj[property.name] ?? property.default
-      baseObj = baseObj[property.name]
-    })
+    }])
 
     Reflect.defineMetadata('path', path, originClass)
     Reflect.defineMetadata('router', new Router(), originClass)

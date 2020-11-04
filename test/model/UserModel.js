@@ -5,6 +5,7 @@
  * @logs[0] 2020-11-01 16:26 yijie 创建了UserModel.js文件
  */
 import QMongoose from '~/lib/plugin/QMongoose'
+import { QModel } from '~/lib/common/Component'
 
 @QMongoose.QSchema()
 class User {
@@ -16,10 +17,11 @@ class User {
   age: number
 }
 
+@QModel()
 export default class UserModel {
   static user = new User()
   async addUser () {
-    const newUser = new (UserModel.user.$QModel)({
+    const newUser = new (UserModel.user)({
       name: 'test',
       nickName: 'testNick',
       age: 123

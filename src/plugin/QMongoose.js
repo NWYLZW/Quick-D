@@ -10,39 +10,59 @@ export default {
   QSchema: (schemaName: string, dbName: string): ClassDecorator => {
     return (originClass: Function) => {
       class newClass extends originClass {
-        __$QInitModel () {
-          const dataBaseServers =
-            ((global
-              ['$Quick-D'] ?? {})
-              ['dataBaseServers'] ?? {})
-          let selDataBaseServer = void 0
-          for (const dataBaseServerName in dataBaseServers) {
-            const dataBaseServer = dataBaseServers[dataBaseServerName]
-            if (dataBaseServer.type !== 'mongoose') continue
-            if (
-              dbName === void 0
-              || dbName === dataBaseServerName
-            ) {
-              selDataBaseServer = dataBaseServer
-              break
-            }
-          }
-          if (selDataBaseServer === void 0) {
-            throw new MongooseError('Cannot find the specified connection')
+        async __$QInitModel () {
+          let count = 10
+          const getSelDataBaseServer = () => {
+            return new Promise((resolve, reject) => {
+              setTimeout(_ => {
+                count-=1
+                if (count === 0) {
+                  reject(new MongooseError('Cannot find the specified connection'))
+                }
+
+                const dataBaseServers =
+                  ((global
+                    ['$Quick-D'] ?? {})
+                    ['dataBaseServers'] ?? {})
+                let selDataBaseServer = void 0
+                for (const dataBaseServerName in dataBaseServers) {
+                  const dataBaseServer = dataBaseServers[dataBaseServerName]
+                  if (dataBaseServer.type !== 'mongoose') continue
+                  if (
+                    dbName === void 0
+                    || dbName === dataBaseServerName
+                  ) {
+                    selDataBaseServer = dataBaseServer
+                    break
+                  }
+                }
+                if (selDataBaseServer === void 0) {
+                  getSelDataBaseServer()
+                    .then(resolve)
+                    .catch(reject)
+                  return
+                }
+                resolve(selDataBaseServer)
+              }, 500)
+            })
           }
 
-          selDataBaseServer = selDataBaseServer.db
+          const selDataBaseServer = (await getSelDataBaseServer()).db
           const Schema = selDataBaseServer.Schema
 
           let properties = Reflect.getMetadata('properties', originClass) ?? {}
-          this.$QModel = selDataBaseServer.model(
+          const model = selDataBaseServer.model(
             schemaName ?? originClass.name,
             new Schema(properties)
           )
+          for (const modelKey in model) {
+            this[modelKey] = model[modelKey]
+          }
         }
         constructor () {
           super()
           this.__$QInitModel()
+            .then(_ => {})
         }
       }
       return newClass

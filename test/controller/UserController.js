@@ -6,9 +6,14 @@
  */
 import { Controller } from '~/lib/common/Controller'
 import { GetRequest } from '~/lib/common/Request'
+import { AutoWired } from '~/lib/common/Component'
+import UserModel from '@/model/UserModel'
 
 @Controller('/user')
 class UserController {
+  @AutoWired()
+  static userModel: UserModel
+
   @GetRequest('/add')
   async addUser (ctx) {
   }
