@@ -19,9 +19,8 @@ class User {
 
 @QModel()
 export default class UserModel {
-  static user = new User()
   async addUser () {
-    const newUser = new (UserModel.user)({
+    const newUser = new (User.$QModel)({
       name: 'test',
       nickName: 'testNick',
       age: 123

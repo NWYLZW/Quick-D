@@ -16,5 +16,7 @@ class UserController {
 
   @GetRequest('/add')
   async addUser (ctx) {
+    await this.userModel.addUser()
+    return '<h1>Success</h1>'
   }
 }

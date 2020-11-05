@@ -9,73 +9,65 @@ import MongooseError from 'mongoose/lib/error/mongooseError'
 export default {
   QSchema: (schemaName: string, dbName: string): ClassDecorator => {
     return (originClass: Function) => {
-      class newClass extends originClass {
-        async __$QInitModel () {
-          let count = 10
-          const getSelDataBaseServer = () => {
-            return new Promise((resolve, reject) => {
-              setTimeout(_ => {
-                count-=1
-                if (count === 0) {
-                  reject(new MongooseError('Cannot find the specified connection'))
-                }
+      (async _ => {
+        let count = 10
+        const getSelDataBaseServer = () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(_ => {
+              count-=1
+              if (count === 0) {
+                reject(new MongooseError('Cannot find the specified connection'))
+              }
 
-                const dataBaseServers =
-                  ((global
-                    ['$Quick-D'] ?? {})
-                    ['dataBaseServers'] ?? {})
-                let selDataBaseServer = void 0
-                for (const dataBaseServerName in dataBaseServers) {
-                  const dataBaseServer = dataBaseServers[dataBaseServerName]
-                  if (dataBaseServer.type !== 'mongoose') continue
-                  if (
-                    dbName === void 0
-                    || dbName === dataBaseServerName
-                  ) {
-                    selDataBaseServer = dataBaseServer
-                    break
-                  }
+              const dataBaseServers =
+                ((global
+                  ['$Quick-D'] ?? {})
+                  ['dataBaseServers'] ?? {})
+              let selDataBaseServer = void 0
+              for (const dataBaseServerName in dataBaseServers) {
+                const dataBaseServer = dataBaseServers[dataBaseServerName]
+                if (dataBaseServer.type !== 'mongoose') continue
+                if (
+                  dbName === void 0
+                  || dbName === dataBaseServerName
+                ) {
+                  selDataBaseServer = dataBaseServer
+                  break
                 }
-                if (selDataBaseServer === void 0) {
-                  getSelDataBaseServer()
-                    .then(resolve)
-                    .catch(reject)
-                  return
-                }
-                resolve(selDataBaseServer)
-              }, 500)
-            })
-          }
-
-          const selDataBaseServer = (await getSelDataBaseServer()).db
-          const Schema = selDataBaseServer.Schema
-
-          let properties = Reflect.getMetadata('properties', originClass) ?? {}
-          const model = selDataBaseServer.model(
-            schemaName ?? originClass.name,
-            new Schema(properties)
-          )
-          for (const modelKey in model) {
-            this[modelKey] = model[modelKey]
-          }
+              }
+              if (selDataBaseServer === void 0) {
+                getSelDataBaseServer()
+                  .then(resolve)
+                  .catch(reject)
+                return
+              }
+              resolve(selDataBaseServer)
+            }, 500)
+          })
         }
-        constructor () {
-          super()
-          this.__$QInitModel()
-            .then(_ => {})
-        }
-      }
-      return newClass
+
+        const selDataBaseServer = (await getSelDataBaseServer()).db
+        const Schema = selDataBaseServer.Schema
+
+        const properties = Reflect.getMetadata('properties', originClass) ?? {}
+        const schema = new Schema(properties)
+
+        originClass.$QModel = selDataBaseServer.model(
+          schemaName ?? originClass.name,
+          schema
+        )
+      })().then(_ => {
+      })
     }
   },
   QProperty: (value: Object, alias: string): PropertyDecorator => {
     return (target: Object, propertyKey: String | Symbol) => {
-      let properties = Reflect.getMetadata('properties', target)
+      let properties = Reflect.getMetadata('properties', target.constructor)
       if (properties === undefined) {
         properties = {}
       }
       properties[alias ?? propertyKey] = value
-      Reflect.defineMetadata('properties', properties, target)
+      Reflect.defineMetadata('properties', properties, target.constructor)
     }
   }
 }
